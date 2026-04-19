@@ -13,13 +13,18 @@ var has_black = [true, true, false, true, true, true, false]
 
 var last_note = -1
 
+var sequence = []
+var rec = false
+
 func _input(event):
 	var note = -1
 
-	if event is InputEventMouseButton:
-		if event.pressed:
+	if event is InputEventMouseButton and event.pressed:
 			note = calculate_note(event.position)
 			play_note(note, 0.25, 0)
+			
+			if rec:
+				sequence.append(note)
 
 
 func calculate_note(pos):
@@ -27,7 +32,7 @@ func calculate_note(pos):
 
 	white_w = vs.x / TOTAL_WHITE
 	black_w = white_w * 0.6
-	black_h = vs.y * 0.6
+	black_h = vs.y * 0.6/1.5
 
 	var note = -1
 
@@ -39,7 +44,7 @@ func calculate_note(pos):
 		if black_offset[note_index] != -1:
 			var x = (i + 1) * white_w - black_w/2
 			
-			var rect = Rect2(x,0,black_w, black_h)
+			var rect = Rect2(x,0,black_w, black_h/1.5)
 			
 			if rect.has_point(pos):
 				var octave = i / 7
@@ -50,7 +55,7 @@ func calculate_note(pos):
 		for i in range(TOTAL_WHITE):
 			var x = i * white_w
 			
-			var rect = Rect2(x, 0, white_w, vs.y)
+			var rect = Rect2(x, 0, white_w, vs.y/1.5)
 			
 			if rect.has_point(pos):
 				var octave = i / 7
@@ -98,6 +103,17 @@ func _draw():
 			draw_rect(Rect2(x, 0, white_w * 0.6, vs.y * 0.6/1.5), Color.BLACK)
 
 
-func _on_check_box_toggled(toggled_on: bool) -> void:
+func _on_check_box_toggled(toggled_on):
+	rec = toggled_on
 	
-	pass
+	if rec:
+		sequence.clear()
+
+func play_seq():
+	for note in sequence:
+		play_note(note,0.3,0)
+		await get_tree().create_timer(0.35).timeout
+
+
+func _on_button_pressed() -> void:
+	play_seq()
