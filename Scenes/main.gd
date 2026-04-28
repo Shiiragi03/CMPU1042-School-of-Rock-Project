@@ -14,8 +14,6 @@ var white_offset = [0,2,4,5,7,9,11]
 
 var has_black = [true, true, false, true, true, true, false]
 
-var last_note = -1
-
 var sequence = []
 var rec = false
 
@@ -55,7 +53,7 @@ func calculate_note(pos):
 				
 	if note == -1:
 		
-		for i in range(TOTAL_WHITE):
+		for i in TOTAL_WHITE:
 			var x = i * white_w
 			
 			var rect = Rect2(x, 0, white_w, vs.y/1.5)
@@ -93,12 +91,12 @@ func _draw():
 	var vs = get_viewport_rect().size
 	white_w = vs.x / TOTAL_WHITE
 
-	for i in range(TOTAL_WHITE):
+	for i in TOTAL_WHITE:
 		var x = i * white_w
 		draw_rect(Rect2(x, 0, white_w, vs.y/1.5), Color.WHITE)
 		draw_rect(Rect2(x, 0, white_w, vs.y/1.5), Color.BLACK, false, 2)
 
-	for i in range(TOTAL_WHITE):
+	for i in TOTAL_WHITE:
 		var drawkeys = i % 7
 
 		if has_black[drawkeys]:

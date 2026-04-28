@@ -14,7 +14,7 @@ offset_left = 4.0
 offset_top = 541.0
 offset_right = 28.0
 offset_bottom = 565.0
-text = "Save sequance"
+text = "Save sequence"
 
 [node name="Button" type="Button" parent="." unique_id=1038605991]
 offset_left = 155.0
